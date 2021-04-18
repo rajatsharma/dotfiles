@@ -42,6 +42,6 @@ nix-env -e dotfiles
 rm -rf .config/fish
 ```
 
-_Note: For now only packages are configured using this. All the configuration files for the shell are downloaded from my [dotfiles](https://github.com/rajatsharma/dotfiles). In the future, all those files will be moved to this repository._
+_Note: For now, this derivation only configures packages and downloads all the shell configurations from my [dotfiles](https://github.com/rajatsharma/dotfiles). In the future, all those files will be moved to this repository._
 
 [![MIT License](https://img.shields.io/badge/license-MIT-black.svg?style=flat-square)](/LICENSE)

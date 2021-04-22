@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 let
+  username = "rajatsharma";
   nix-npm-install = pkgs.writeScriptBin "npmig" ''
     #!/usr/bin/env bash
     tempdir="/tmp/nix-npm-install/$1"
@@ -29,8 +30,8 @@ in
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "rajatsharma";
-  home.homeDirectory = "/home/rajatsharma";
+  home.username = "${username}";
+  home.homeDirectory = "/home/${username}";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -46,17 +47,16 @@ in
     let
       dbStart = pkgs.writeShellScriptBin "db:start"
         ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
-      initDb = pkgs.writeShellScriptBin "db:init" "initdb -U rajatsharma -W --no-locale --encoding=UTF8";
+      initDb = pkgs.writeShellScriptBin "db:init" "initdb -U postgres -W --no-locale --encoding=UTF8";
       dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
       dbCreate = pkgs.writeShellScriptBin "db:create"
-        "createdb -U rajatsharma -h localhost postgres";
+        "createdb -U postgres -h localhost postgres";
       dbCheck = pkgs.writeShellScriptBin "db:check"
-        "pg_isready -d postgres -h localhost -p 5432 -U rajatsharma";
+        "pg_isready -d postgres -h localhost -p 5432 -U postgres";
 
     in
     with pkgs; [
       # Shell and tools
-      fish
       starship
       direnv
       # Node
@@ -95,15 +95,17 @@ in
     for file in ~/.config/fish/sources/{path,exports,aliases,nix,git,shell,functions,extra}.fish
       [ -r "$file" ] && [ -f "$file" ] && source "$file";
     end
+
+    set -U fish_user_paths ~/.cargo/bin
   '';
+
+  home.sessionVariables = with pkgs; {
+    RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
+    PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
+    PGDATA = "~/pgdata";
+  };
 
   home.file.".config/fish/sources/shell.fish".source = fishShellDefaults;
   home.file.".config/fish/sources/git.fish".source = fishNixPlugin;
   home.file.".config/fish/sources/nix.fish".source = fishGitPlugin;
-  home.file.".config/fish/sources/path.fish".text = with pkgs; ''
-    set -g RUST_SRC_PATH ${rust.packages.stable.rustPlatform.rustLibSrc}
-    set -g PKG_CONFIG_PATH ${openssl.dev}/lib/pkgconfig
-    set -U fish_user_paths ~/.cargo/bin $fish_user_paths
-    set -g PGDATA ~/pgdata
-  '';
 }

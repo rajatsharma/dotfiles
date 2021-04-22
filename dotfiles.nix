@@ -19,9 +19,9 @@ let
   initDb = pkgs.writeShellScriptBin "db:init" "initdb -U rajatsharma -W --no-locale --encoding=UTF8";
   dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
   dbCreate = pkgs.writeShellScriptBin "db:create"
-    "createdb -U rajatsharma -h localhost kensai";
+    "createdb -U rajatsharma -h localhost postgres";
   dbCheck = pkgs.writeShellScriptBin "db:check"
-    "pg_isready -d kensai -h localhost -p 5432 -U rajatsharma";
+    "pg_isready -d postgres -h localhost -p 5432 -U rajatsharma";
 
   # Non-deterministic
   fishGitPlugin = builtins.fetchurl {

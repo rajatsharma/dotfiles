@@ -1,6 +1,6 @@
-# Nix dotfiles
+# dotfiles
 
-> My nix dev environment
+> My home-manager dev environment
 
 ## Installation
 
@@ -17,31 +17,29 @@ The above command should succeed and must return two paths. After that you can p
 cd ~
 
 # Clone this repo
-git clone https://github.com/rajatsharma/nix-dotfiles
-cd nix-dotfiles
+git clone https://github.com/rajatsharma/dotfiles
+cd dotfiles
 
 # Install nix
 curl -L https://nixos.org/nix/install | sh
 . $HOME/.nix-profile/etc/profile.d/nix.sh
 
-# Install packages
-nix-env -f dotfiles.nix -i
+# Install home-manager
+nix-channel --add \
+  https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 
+nix-channel --update
+nix-shell '<home-manager>' -A install
+
+cp ./dotfiles.nix ~/.config/nixpkgs/home.nix
+
+# May need to reload shell before running
+home-manager switch
 cd -
 ```
 
-## Uninstallation
+## Rollbacks
 
-To remove installed packages and `fish` config, run:
-
-```sh
-# Remove packages
-nix-env -e dotfiles
-
-# Remove fish config
-rm -rf .config/fish
-```
-
-_Note: For now, this derivation only configures packages. It downloads all the shell configurations from my [dotfiles](https://github.com/rajatsharma/dotfiles). In the future, all those files will be moved to this repository._
+Go [here](https://github.com/nix-community/home-manager#rollbacks).
 
 [![MIT License](https://img.shields.io/badge/license-MIT-black.svg?style=flat-square)](/LICENSE)

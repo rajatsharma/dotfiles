@@ -84,12 +84,15 @@ in
     ];
 
 
+  # git
   programs.git = {
     enable = true;
     userName = "Rajat Sharma";
     userEmail = "lunasunkaiser@gmail.com";
   };
 
+
+  #fish
   programs.fish.enable = true;
   programs.fish.interactiveShellInit = ''
     for file in ~/.config/fish/sources/{path,exports,aliases,nix,git,shell,functions,extra}.fish
@@ -98,6 +101,31 @@ in
 
     set -U fish_user_paths ~/.cargo/bin
   '';
+
+  #vscode
+  programs.vscode.enable = true;
+  programs.vscode.extensions = with pkgs.vscode-extensions; [
+    arrterian.nix-env-selector
+    bungcip.better-toml
+    dhall.dhall-lang
+    editorconfig.editorconfig
+    enkia.tokyo-night
+    jnoortheen.nix-ide
+    matklad.rust-analyzer
+    nwolverson.ide-purescript
+    nwolverson.language-purescript
+    serayuzgur.crates
+  ];
+  programs.vscode.userSettings = {
+    "workbench.colorTheme" = "Tokyo Night Storm";
+    # "editor.fontFamily" = "Jetbrains Mono";
+    "editor.fontSize" = 17;
+    "terminal.integrated.fontSize" = 15;
+    # "terminal.integrated.fontFamily" = "Jetbrains Mono";
+    "editor.wordWrap" = "on";
+    "nixEnvSelector.nixFile" = "\${workspaceRoot}/shell.nix";
+    "[nix]"."editor.formatOnSave" = true;
+  };
 
   home.sessionVariables = with pkgs; {
     RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";

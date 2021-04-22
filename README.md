@@ -31,10 +31,10 @@ nix-channel --add \
 nix-channel --update
 nix-shell '<home-manager>' -A install
 
-cp ./dotfiles.nix ~/.config/nixpkgs/home.nix
+cp ./home.nix ~/.config/nixpkgs/home.nix
 
 # May need to reload shell before running
-home-manager switch
+NIXPKGS_ALLOW_UNFREE=1 home-manager switch
 cd -
 ```
 

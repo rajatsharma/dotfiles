@@ -12,19 +12,24 @@ let
     nix-env -f default.nix -iA $1
     popd
   '';
+  openj9 = pkgs.adoptopenjdk-jre-openj9-bin-8;
+  sbt-openj9 = pkgs.sbt.override { jre = openj9; };
+  ammonite-openj9 = pkgs.ammonite.override { jre = openj9; };
   # Non-deterministic
   fishGitPlugin = builtins.fetchurl {
-    url = https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/git.fish;
+    url =
+      "https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/git.fish";
   };
   fishNixPlugin = builtins.fetchurl {
-    url = https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/nix.fish;
+    url =
+      "https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/nix.fish";
   };
   fishShellDefaults = builtins.fetchurl {
-    url = https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/shell.fish;
+    url =
+      "https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/shell.fish";
   };
 
-in
-{
+in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -43,48 +48,50 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 
-  home.packages =
-    let
-      dbStart = pkgs.writeShellScriptBin "db:start"
-        ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
-      initDb = pkgs.writeShellScriptBin "db:init" "initdb -U postgres -W --no-locale --encoding=UTF8";
-      dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
-      dbCreate = pkgs.writeShellScriptBin "db:create"
-        "createdb -U postgres -h localhost postgres";
-      dbCheck = pkgs.writeShellScriptBin "db:check"
-        "pg_isready -d postgres -h localhost -p 5432 -U postgres";
+  home.packages = let
+    dbStart = pkgs.writeShellScriptBin "db:start"
+      ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
+    initDb = pkgs.writeShellScriptBin "db:init"
+      "initdb -U postgres -W --no-locale --encoding=UTF8";
+    dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
+    dbCreate = pkgs.writeShellScriptBin "db:create"
+      "createdb -U postgres -h localhost postgres";
+    dbCheck = pkgs.writeShellScriptBin "db:check"
+      "pg_isready -d postgres -h localhost -p 5432 -U postgres";
 
-    in
-    with pkgs; [
-      # Shell and tools
-      starship
-      direnv
-      # Node
-      nodejs-10_x
-      yarn
-      nodePackages.node2nix
-      nix-npm-install
-      # Purescript
-      purescript
-      spago
-      # Rust
-      cargo
-      rustc
-      rustfmt
-      clippy
-      pkg-config
-      openssl.dev
-      # Postgres
-      postgresql
-      dbStart
-      initDb
-      dbStop
-      dbCreate
-      dbCheck
-      postgresql.lib
-      dbmate
-    ];
-
+  in with pkgs; [
+    # Shell and tools
+    starship
+    direnv
+    # Node
+    nodejs-10_x
+    yarn
+    nodePackages.node2nix
+    nix-npm-install
+    # Purescript
+    purescript
+    spago
+    # Rust
+    cargo
+    rustc
+    rustfmt
+    clippy
+    pkg-config
+    openssl.dev
+    # Java
+    openj9
+    sbt-openj9
+    ammonite-openj9
+    # Postgres
+    postgresql
+    dbStart
+    initDb
+    dbStop
+    dbCreate
+    dbCheck
+    postgresql.lib
+    dbmate
+  ];
 
   # git
   programs.git = {
@@ -92,7 +99,6 @@ in
     userName = "Rajat Sharma";
     userEmail = "lunasunkaiser@gmail.com";
   };
-
 
   #fish
   programs.fish.enable = true;

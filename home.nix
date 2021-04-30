@@ -1,5 +1,4 @@
 { config, pkgs, ... }:
-
 let
   username = "rajatsharma";
   nix-npm-install = pkgs.writeScriptBin "npmig" ''
@@ -116,19 +115,6 @@ in
   '';
 
   #vscode
-  programs.vscode.enable = true;
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
-    # arrterian.nix-env-selector
-    # bungcip.better-toml
-    dhall.dhall-lang
-    editorconfig.editorconfig
-    # enkia.tokyo-night
-    jnoortheen.nix-ide
-    matklad.rust-analyzer
-    # nwolverson.ide-purescript
-    # nwolverson.language-purescript
-    serayuzgur.crates
-  ];
   programs.vscode.userSettings = {
     "workbench.colorTheme" = "Tokyo Night Storm";
     # "editor.fontFamily" = "Jetbrains Mono";

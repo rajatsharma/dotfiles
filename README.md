@@ -27,6 +27,8 @@ curl -L https://nixos.org/nix/install | sh
 # Install home-manager
 nix-channel --add \
   https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+# Add Unstable packages
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
 
 nix-channel --update
 nix-shell '<home-manager>' -A install

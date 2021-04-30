@@ -29,7 +29,8 @@ let
       "https://raw.githubusercontent.com/rajatsharma/dotfiles-legacy/master/sources/shell.fish";
   };
 
-in {
+in
+{
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -48,50 +49,53 @@ in {
   # changes in each release.
   home.stateVersion = "21.05";
 
-  home.packages = let
-    dbStart = pkgs.writeShellScriptBin "db:start"
-      ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
-    initDb = pkgs.writeShellScriptBin "db:init"
-      "initdb -U postgres -W --no-locale --encoding=UTF8";
-    dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
-    dbCreate = pkgs.writeShellScriptBin "db:create"
-      "createdb -U postgres -h localhost postgres";
-    dbCheck = pkgs.writeShellScriptBin "db:check"
-      "pg_isready -d postgres -h localhost -p 5432 -U postgres";
+  home.packages =
+    let
+      dbStart = pkgs.writeShellScriptBin "db:start"
+        ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
+      initDb = pkgs.writeShellScriptBin "db:init"
+        "initdb -U postgres -W --no-locale --encoding=UTF8";
+      dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
+      dbCreate = pkgs.writeShellScriptBin "db:create"
+        "createdb -U postgres -h localhost postgres";
+      dbCheck = pkgs.writeShellScriptBin "db:check"
+        "pg_isready -d postgres -h localhost -p 5432 -U postgres";
 
-  in with pkgs; [
-    # Shell and tools
-    starship
-    direnv
-    # Node
-    nodejs-10_x
-    yarn
-    nodePackages.node2nix
-    nix-npm-install
-    # Purescript
-    purescript
-    spago
-    # Rust
-    cargo
-    rustc
-    rustfmt
-    clippy
-    pkg-config
-    openssl.dev
-    # Java
-    openj9
-    sbt-openj9
-    ammonite-openj9
-    # Postgres
-    postgresql
-    dbStart
-    initDb
-    dbStop
-    dbCreate
-    dbCheck
-    postgresql.lib
-    dbmate
-  ];
+    in
+    with pkgs; [
+      # Shell and tools
+      starship
+      direnv
+      # Node
+      nodejs-10_x
+      yarn
+      nodePackages.node2nix
+      nix-npm-install
+      # Purescript
+      purescript
+      spago
+      # Rust
+      cargo
+      rustc
+      rustfmt
+      clippy
+      pkg-config
+      openssl.dev
+      # Java
+      # openj9
+      openj9
+      sbt-openj9
+      ammonite-openj9
+      # Postgres
+      postgresql
+      dbStart
+      initDb
+      dbStop
+      dbCreate
+      dbCheck
+      postgresql.lib
+      dbmate
+    ];
 
   # git
   programs.git = {

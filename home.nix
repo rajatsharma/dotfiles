@@ -111,7 +111,9 @@ in
     end
 
     set -U fish_user_paths ~/.cargo/bin
+    set -U fish_user_paths ~/.npm-packages/bin
     set -x LD_LIBRARY_PATH ${pkgs.postgresql.lib}/lib
+    set -g JAVA_HOME ${openj9}/bin
   '';
 
   home.sessionVariables = with pkgs; {

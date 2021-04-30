@@ -114,18 +114,6 @@ in
     set -x LD_LIBRARY_PATH ${pkgs.postgresql.lib}/lib
   '';
 
-  #vscode
-  programs.vscode.userSettings = {
-    "workbench.colorTheme" = "Tokyo Night Storm";
-    # "editor.fontFamily" = "Jetbrains Mono";
-    "editor.fontSize" = 17;
-    "terminal.integrated.fontSize" = 15;
-    # "terminal.integrated.fontFamily" = "Jetbrains Mono";
-    "editor.wordWrap" = "on";
-    "nixEnvSelector.nixFile" = "\${workspaceRoot}/shell.nix";
-    "[nix]"."editor.formatOnSave" = true;
-  };
-
   home.sessionVariables = with pkgs; {
     RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
     PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";

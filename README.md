@@ -38,6 +38,10 @@ cp ./home.nix ~/.config/nixpkgs/home.nix
 # May need to reload shell before running
 NIXPKGS_ALLOW_UNFREE=1 home-manager switch
 cd -
+
+# Change shell to fish
+echo `which fish` | sudo tee -a /etc/shells
+chsh -s `which fish`
 ```
 
 ## Rollbacks

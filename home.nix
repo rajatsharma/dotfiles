@@ -73,11 +73,6 @@ in
       # Purescript
       purescript
       spago
-      # Rust
-      cargo
-      rustc
-      rustfmt
-      clippy
       pkg-config
       openssl.dev
       # Java
@@ -110,14 +105,13 @@ in
       [ -r "$file" ] && [ -f "$file" ] && source "$file";
     end
 
-    set -U fish_user_paths ~/.cargo/bin
-    set -U fish_user_paths ~/.npm-packages/bin
+    fish_add_path ~/.cargo/bin
+    fish_add_path ~/.npm-packages/bin
     set -x LD_LIBRARY_PATH ${pkgs.postgresql.lib}/lib
     set -g JAVA_HOME ${openj9}/bin
   '';
 
   home.sessionVariables = with pkgs; {
-    RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
     PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
     PGDATA = "~/pgdata";
   };

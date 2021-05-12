@@ -116,6 +116,12 @@ in
     PGDATA = "~/pgdata";
   };
 
+  home.activation = {
+    rustInstallation = ''
+      curl https://sh.rustup.rs -sSf | sh -s -- -y
+    '';
+  };
+
   home.file.".config/fish/sources/shell.fish".source = fishShellDefaults;
   home.file.".config/fish/sources/git.fish".source = fishNixPlugin;
   home.file.".config/fish/sources/nix.fish".source = fishGitPlugin;

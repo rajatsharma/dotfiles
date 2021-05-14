@@ -120,6 +120,9 @@ in
     rustInstallation = ''
       curl https://sh.rustup.rs -sSf | sh -s -- -y
     '';
+    setNpmPrefix = ''
+      npm config set prefix '~/.npm-packages'
+    '';
   };
 
   home.file.".config/fish/sources/shell.fish".source = fishShellDefaults;

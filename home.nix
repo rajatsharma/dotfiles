@@ -66,7 +66,7 @@ in
       starship
       direnv
       # Node
-      nodejs-10_x
+      nodejs-12_x
       yarn
       nodePackages.node2nix
       nix-npm-install
@@ -76,7 +76,6 @@ in
       pkg-config
       openssl.dev
       # Java
-      # openj9
       openj9
       sbt-openj9
       ammonite-openj9

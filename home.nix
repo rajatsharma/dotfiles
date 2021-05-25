@@ -108,6 +108,7 @@ in
     fish_add_path ~/.npm-packages/bin
     set -x LD_LIBRARY_PATH ${pkgs.postgresql.lib}/lib
     set -g JAVA_HOME ${openj9}/bin
+    set -g RUSTC_WRAPPER sccache
   '';
 
   home.sessionVariables = with pkgs; {

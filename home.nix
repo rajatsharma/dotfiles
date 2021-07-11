@@ -1,19 +1,6 @@
 { config, pkgs, ... }:
 let
   username = "rajatsharma";
-  nix-npm-install = pkgs.writeScriptBin "npmig" ''
-    #!/usr/bin/env bash
-    tempdir="/tmp/nix-npm-install/$1"
-    mkdir -p $tempdir
-    pushd $tempdir
-    # note the differences here:
-    ${pkgs.nodePackages.node2nix}/bin/node2nix --input <( echo "[\"$1\"]")
-    nix-env -f default.nix -iA $1
-    popd
-  '';
-  openj9 = pkgs.adoptopenjdk-jre-openj9-bin-8;
-  sbt-openj9 = pkgs.sbt.override { jre = openj9; };
-  ammonite-openj9 = pkgs.ammonite.override { jre = openj9; };
   # Non-deterministic
   fishGitPlugin = builtins.fetchurl {
     url =
@@ -49,18 +36,6 @@ in
   home.stateVersion = "21.05";
 
   home.packages =
-    let
-      dbStart = pkgs.writeShellScriptBin "db:start"
-        ''pg_ctl -o "--unix_socket_directories='$PWD'" start'';
-      initDb = pkgs.writeShellScriptBin "db:init"
-        "initdb -U postgres -W --no-locale --encoding=UTF8";
-      dbStop = pkgs.writeShellScriptBin "db:stop" "pg_ctl stop";
-      dbCreate = pkgs.writeShellScriptBin "db:create"
-        "createdb -U postgres -h localhost postgres";
-      dbCheck = pkgs.writeShellScriptBin "db:check"
-        "pg_isready -d postgres -h localhost -p 5432 -U postgres";
-
-    in
     with pkgs; [
       # Shell and tools
       starship
@@ -69,24 +44,12 @@ in
       nodejs-12_x
       yarn
       nodePackages.node2nix
-      nix-npm-install
       # Purescript
       purescript
       spago
+      # Rust
       pkg-config
       openssl.dev
-      # Java
-      openj9
-      sbt-openj9
-      ammonite-openj9
-      # Postgres
-      postgresql
-      dbStart
-      initDb
-      dbStop
-      dbCreate
-      dbCheck
-      postgresql.lib
       dbmate
     ];
 
@@ -106,9 +69,8 @@ in
 
     fish_add_path ~/.cargo/bin
     fish_add_path ~/.npm-packages/bin
-    set -x LD_LIBRARY_PATH ${pkgs.postgresql.lib}/lib
-    set -g JAVA_HOME ${openj9}/bin
-    set -g RUSTC_WRAPPER sccache
+    set -g RUSTC_WRAPPER ~/.cargo/bin/sccache
+    set -g 
   '';
 
   home.sessionVariables = with pkgs; {
@@ -117,11 +79,18 @@ in
   };
 
   home.activation = {
-    rustInstallation = ''
+    rustUp = ''
       curl https://sh.rustup.rs -sSf | sh -s -- -y
+    '';
+    ghcUp = ''
+      export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+      curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     '';
     setNpmPrefix = ''
       npm config set prefix '~/.npm-packages'
+    '';
+    sccache = ''
+      cargo install sccache
     '';
   };
 

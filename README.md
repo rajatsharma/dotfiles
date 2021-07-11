@@ -12,6 +12,12 @@ which git && which curl
 
 The above command should succeed and must return two paths. After that you can proceed with the installation.
 
+For ubuntu run:
+
+```sh
+sudo apt install build-essential curl libffi-dev libffi7 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+```
+
 ```sh
 # Make sure you are in home dir
 cd ~

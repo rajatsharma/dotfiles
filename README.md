@@ -15,7 +15,9 @@ The above command should succeed and must return two paths. After that you can p
 For ubuntu run:
 
 ```sh
-sudo apt install build-essential curl libffi-dev libffi7 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+sudo apt install build-essential \ 
+  curl libffi-dev libffi7 libgmp-dev \
+  libgmp10 libncurses-dev libncurses5 libtinfo5
 ```
 
 ```sh

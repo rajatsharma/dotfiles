@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 let
   username = "rajatsharma";
+  compiler = "ghc8104";
+  ghc = pkgs.haskell.packages.${compiler};
+  allHaskellPackages = ghc.ghcWithPackages (p: [ p.haskell-language-server ]);
   # Non-deterministic
   fishGitPlugin = builtins.fetchurl {
     url =
@@ -40,6 +43,7 @@ in
       # Shell and tools
       starship
       direnv
+      nixpkgs-fmt
       # Node
       nodejs-12_x
       yarn
@@ -51,6 +55,8 @@ in
       pkg-config
       openssl.dev
       dbmate
+      cabal-install
+      allHaskellPackages
     ];
 
   # git
@@ -81,11 +87,6 @@ in
     # Non-deterministic
     rustUp = ''
       curl https://sh.rustup.rs -sSf | sh -s -- -y
-    '';
-    # Non-deterministic
-    ghcUp = ''
-      export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-      curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     '';
     setNpmPrefix = ''
       npm config set prefix '~/.npm-packages'

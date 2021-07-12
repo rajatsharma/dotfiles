@@ -70,7 +70,6 @@ in
     fish_add_path ~/.cargo/bin
     fish_add_path ~/.npm-packages/bin
     set -g RUSTC_WRAPPER ~/.cargo/bin/sccache
-    set -g 
   '';
 
   home.sessionVariables = with pkgs; {
@@ -79,9 +78,11 @@ in
   };
 
   home.activation = {
+    # Non-deterministic
     rustUp = ''
       curl https://sh.rustup.rs -sSf | sh -s -- -y
     '';
+    # Non-deterministic
     ghcUp = ''
       export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
       curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh

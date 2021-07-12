@@ -1,9 +1,6 @@
 { config, pkgs, ... }:
 let
   username = "rajatsharma";
-  compiler = "ghc8104";
-  ghc = pkgs.haskell.packages.${compiler};
-  allHaskellPackages = ghc.ghcWithPackages (p: [ p.haskell-language-server ]);
   # Non-deterministic
   fishGitPlugin = builtins.fetchurl {
     url =
@@ -55,8 +52,6 @@ in
       pkg-config
       openssl.dev
       dbmate
-      cabal-install
-      allHaskellPackages
     ];
 
   # git
